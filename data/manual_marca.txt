@@ -1,0 +1,59 @@
+MANUAL DE TOM DE MARCA — HOUSEWHEY
+(Documento de referência da marca. Nota: no protótipo, este arquivo funciona como um substituto reduzido do "manual de 500 mil tokens" descrito no paper — o objetivo é demonstrar o padrão de chunking + sumarização recursiva do RLM, não reproduzir o volume real.)
+
+== 1. QUEM SOMOS ==
+A Housewhey nasceu da frustração de atletas amadores com suplementos de sabor ruim e rótulos cheios de promessas vazias. Nossa proposta é simples: nutrição esportiva de alta performance, com sabor de verdade, para quem treina de verdade — sem prometer milagre, sem forçar comparação com concorrente por nome, e sempre com prova real por trás de cada alegação.
+
+== 2. TOM DE VOZ ==
+Fale como um amigo que treina junto e entende de nutrição: direto, motivador, próximo. Evite jargão técnico-farmacêutico excessivo (ex.: "biodisponibilidade", "hidrólise proteica") a menos que o público seja claramente avançado. Prefira frases curtas, verbos de ação, e humor leve quando fizer sentido. Nunca soe corporativo ou "de agência" — o cliente deve sentir que está lendo uma mensagem de alguém que realmente treina.
+
+Exemplos de tom correto:
+- "Treino pesado pede suplemento à altura. E sabor bom também."
+- "Sem enrolação: o que funciona é constância mais nutrição certa."
+- "A gente testou com a nossa própria equipe antes de vender pra você."
+
+Exemplos de tom incorreto (evitar):
+- "Nosso produto revolucionário maximiza a hipertrofia muscular através de mecanismos bioquímicos avançados." (jargão excessivo, soa vendedor exagerado)
+- "Somos a melhor marca de suplementos do Brasil, muito superior à [concorrente]." (comparação direta proibida)
+- "Emagreça 5kg em duas semanas tomando Housewhey." (promessa de emagrecimento proibida)
+
+== 3. O QUE NUNCA PODE SER DITO ==
+3.1 Promessa de emagrecimento ou resultado estético garantido. Suplemento não é medicamento nem fórmula mágica de emagrecimento; qualquer menção precisa vir acompanhada de contexto de treino e dieta, nunca isolada como causa direta.
+3.2 Efeito terapêutico ou medicinal, especialmente para a linha de ômega 3. Não se pode afirmar que o produto "trata", "cura" ou "previne" qualquer condição de saúde. Frases como "reduz inflamação crônica" ou "trata triglicerídeos altos" são proibidas mesmo que existam estudos científicos gerais sobre ômega 3 — a comunicação da marca não pode se apropriar disso como promessa do produto.
+3.3 Comparação direta nominal com concorrentes. É permitido comparar de forma genérica ("diferente de outras marcas do mercado"), mas nunca citar nome de concorrente específico em peça publicitária.
+3.4 Uso de superlativos sem prova ("o melhor", "número 1") sem uma fonte de comprovação citável (ex.: nota de avaliação real, certificação de laboratório).
+
+== 4. PROVA SOCIAL E CREDIBILIDADE ==
+Toda alegação de qualidade deve vir ancorada em uma das seguintes fontes de prova, nesta ordem de preferência:
+1. Depoimento real de cliente recorrente (com nome e, se possível, foto/vídeo autorizados).
+2. Selo de análise laboratorial de pureza do lote.
+3. Nota média de avaliações do e-commerce (hoje 4.8/5).
+Evite depoimentos genéricos ou atores não identificados como "clientes reais" — isso já gerou desgaste de credibilidade em criativos anteriores e deve ser evitado em novas peças.
+
+== 5. OBJEÇÕES MAIS COMUNS E COMO RESPONDER NA COMUNICAÇÃO ==
+5.1 "Suplemento não faz efeito sem treino/dieta." — Resposta recomendada: reconhecer que sim, suplemento é parte de um conjunto, e não escapar disso; a marca ganha credibilidade ao ser honesta sobre isso, transformando a objeção em prova de transparência.
+5.2 "É caro comparado a marcas de academia." — Resposta recomendada: ancorar no argumento de qualidade de matéria-prima e pureza testada em laboratório, não entrar em guerra de preço.
+5.3 "Sabor de whey costuma ser ruim." — Resposta recomendada: usar depoimento espontâneo sobre sabor como principal gancho de conversão, é um dos maiores diferenciais táticos da marca.
+
+== 6. DIRETRIZES POR PRODUTO ==
+6.1 Whey Protein: foco em constância de treino, sabor e praticidade no dia a dia. Nunca prometer hipertrofia rápida ou "resultado em X dias".
+6.2 Ômega 3: foco em rotina de bem-estar geral e complemento alimentar. Proibido qualquer menção a efeito terapêutico ou tratamento de condição médica (colesterol, inflamação, triglicerídeos). Priorizar linguagem de "parte da rotina" e "cuidado contínuo".
+6.3 Combos (ex.: Combo Casal): foco em ocasião e presente, tom mais leve e afetivo, sem perder a honestidade sobre o que o produto realmente entrega.
+
+== 7. DIRETRIZES POR CANAL ==
+7.1 Meta Ads (Feed/Reels): hook nos primeiros 2 segundos precisa ser visual e humano — evitar abrir com texto estático genérico. Vídeos de depoimento performam melhor que estáticos no histórico da marca.
+7.2 Google Ads (Pesquisa): tom mais direto e informativo, priorizando termos de busca de intenção (ex.: "whey sabor bom"), sem exagero publicitário.
+7.3 WhatsApp/CRM: tom consultivo e próximo, nunca comercial agressivo; é o canal de maior confiança do cliente, deve ser tratado com mais cuidado ainda que os anúncios.
+
+== 8. HISTÓRICO DE APRENDIZADOS DE CAMPANHA ==
+8.1 Criativos de depoimento tendem a saturar após 10-15 dias de veiculação contínua no mesmo público; recomenda-se refresh preventivo antes da queda de hook rate.
+8.2 Combos sazonais (Dia dos Namorados, Natal) performam melhor com tom afetivo e prova social de casais reais, não apenas produto isolado em still de estúdio.
+8.3 Público de retargeting de 14 dias na linha Whey converte bem, mas é sensível a criativos repetidos — variar formato (estático vs vídeo) a cada duas semanas.
+
+== 9. RESUMO EXECUTIVO PARA GERAÇÃO RÁPIDA DE COPY ==
+Ao gerar uma nova variação de copy, sempre validar contra este checklist:
+[ ] Tom próximo e motivador, sem jargão técnico excessivo
+[ ] Nenhuma promessa de emagrecimento ou efeito terapêutico
+[ ] Nenhuma comparação nominal com concorrente
+[ ] Prova social real citada ou referenciada
+[ ] CTA claro e coerente com a métrica de sucesso da campanha

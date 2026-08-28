@@ -1,0 +1,21 @@
+{
+  "client_id": "cli_housewhey",
+  "oferta": "Linha de suplementos Housewhey (whey protein, ômega 3 e combos) vendida via e-commerce próprio, com foco em qualidade de matéria-prima e sabor.",
+  "promessa": "Nutrição esportiva de alta performance com sabor que não parece 'remédio', para quem treina de verdade.",
+  "prova": [
+    "Depoimentos reais de clientes recorrentes",
+    "Selo de pureza/análise laboratorial nos rótulos",
+    "Nota média 4.8 em avaliações do e-commerce"
+  ],
+  "objecoes": [
+    "'Suplemento não faz efeito sem treino/dieta'",
+    "'É caro comparado a marcas de academia'",
+    "'Sabor de whey costuma ser ruim'"
+  ],
+  "tom_de_voz": "Direto, motivador e próximo, como um treino puxado por um amigo que entende de nutrição. Evita jargão técnico excessivo.",
+  "nao_pode_falar": [
+    "Não prometer emagrecimento ou resultado estético garantido",
+    "Não afirmar efeito terapêutico/medicinal para o ômega 3",
+    "Não comparar diretamente por nome com concorrentes"
+  ]
+}

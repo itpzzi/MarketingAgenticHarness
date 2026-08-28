@@ -1,0 +1,111 @@
+{
+  "client_id": "cli_housewhey",
+  "updated_at": "2026-08-28T09:00:00-03:00",
+  "campaigns": [
+    {
+      "campaign_id": "camp_namorados",
+      "campaign_name": "Dia dos Namorados - Combo Casal",
+      "objective": "conversao",
+      "budget_diario": 500,
+      "status": "active",
+      "adsets": [
+        {
+          "adset_id": "adset_namorados_conv",
+          "adset_name": "Conversão - Interesses Casal",
+          "ads": [
+            {
+              "ad_id": "ad_001",
+              "ad_name": "Combo_Casal_Depoimento",
+              "utm_content": "ad_001",
+              "status": "active",
+              "spend": 420.30,
+              "impressions": 18200,
+              "clicks": 546,
+              "hook_rate": 0.28
+            },
+            {
+              "ad_id": "ad_002",
+              "ad_name": "Combo_Casal_Estatico",
+              "utm_content": "ad_002",
+              "status": "active",
+              "spend": 178.90,
+              "impressions": 9100,
+              "clicks": 198,
+              "hook_rate": 0.15
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "campaign_id": "camp_omega3",
+      "campaign_name": "Omega 3 - Lançamento",
+      "objective": "conversao",
+      "budget_diario": 300,
+      "status": "active",
+      "adsets": [
+        {
+          "adset_id": "adset_omega3_prospec",
+          "adset_name": "Prospecção - Lookalike Compradores",
+          "ads": [
+            {
+              "ad_id": "ad_003",
+              "ad_name": "Omega3_UGC_Medico",
+              "utm_content": "ad_003",
+              "status": "active",
+              "spend": 612.40,
+              "impressions": 30500,
+              "clicks": 915,
+              "hook_rate": 0.32
+            },
+            {
+              "ad_id": "ad_004",
+              "ad_name": "Omega3_Depoimento_v2",
+              "utm_content": "ad_004",
+              "status": "active",
+              "spend": 541.75,
+              "impressions": 15400,
+              "clicks": 212,
+              "hook_rate": 0.09
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "campaign_id": "camp_whey",
+      "campaign_name": "Whey Protein Always-On",
+      "objective": "conversao",
+      "budget_diario": 250,
+      "status": "active",
+      "adsets": [
+        {
+          "adset_id": "adset_whey_retarg",
+          "adset_name": "Retargeting - Add to Cart 14d",
+          "ads": [
+            {
+              "ad_id": "ad_005",
+              "ad_name": "Whey_Oferta_Combo",
+              "utm_content": "ad_005",
+              "status": "active",
+              "spend": 301.20,
+              "impressions": 12100,
+              "clicks": 387,
+              "hook_rate": 0.20
+            },
+            {
+              "ad_id": "ad_006",
+              "ad_name": "Whey_Depoimento_Atleta",
+              "utm_content": "ad_006",
+              "status": "paused",
+              "spend": 258.60,
+              "impressions": 10800,
+              "clicks": 259,
+              "hook_rate": 0.18
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

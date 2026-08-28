@@ -1,0 +1,47 @@
+{
+  "client_id": "cli_housewhey",
+  "events": [
+    {
+      "occurred_at": "2026-06-02T10:00:00-03:00",
+      "title": "Onboarding Housewhey",
+      "summary": "Cliente entra na operação SPOT. Aline assume tráfego pago (Meta e Google) e Carolina assume gestão de conta. Luiza entra no atendimento via WhatsApp.",
+      "actor_ids": ["p_aline", "p_carolina", "p_luiza"],
+      "related_node_ids": ["cli_housewhey", "hub_spot"]
+    },
+    {
+      "occurred_at": "2026-07-15T15:30:00-03:00",
+      "title": "Briefing campanha Dia dos Namorados",
+      "summary": "Reunião + trocas no WhatsApp para alinhar criativos da campanha 'Combo Casal'. Definido depoimento em vídeo como linha principal de criativo.",
+      "actor_ids": ["p_aline", "p_carolina"],
+      "related_node_ids": ["camp_namorados"]
+    },
+    {
+      "occurred_at": "2026-07-28T09:00:00-03:00",
+      "title": "Subida da campanha Omega 3",
+      "summary": "Campanha 'Omega 3 - Lançamento' sobe no Meta Ads em fase de prospecção com lookalike de compradores. KPI de CPL acompanhado semanalmente com Carolina.",
+      "actor_ids": ["p_aline", "p_carolina"],
+      "related_node_ids": ["camp_omega3"]
+    },
+    {
+      "occurred_at": "2026-08-14T11:00:00-03:00",
+      "title": "Alerta informal de queda de performance",
+      "summary": "Aline comenta no WhatsApp que um dos criativos de Omega 3 está 'travado' há dias sem sair vendas novas, mas ainda não abriu diagnóstico formal.",
+      "actor_ids": ["p_aline"],
+      "related_node_ids": ["camp_omega3"]
+    },
+    {
+      "occurred_at": "2026-08-20T14:00:00-03:00",
+      "title": "Call semanal 20/08",
+      "summary": "Reunião com o cliente. Pauta: performance da semana, aprovação de novas peças e um pedido do cliente sobre CPA da linha Whey. Peça 'Combo Casal Depoimento v2' ficou pendente de aprovação do cliente.",
+      "actor_ids": ["p_aline", "p_carolina"],
+      "related_node_ids": ["meet_2026_08_20", "task_aprovar_combo", "camp_whey"]
+    },
+    {
+      "occurred_at": "2026-08-26T16:00:00-03:00",
+      "title": "Cobrança de aprovação",
+      "summary": "Carolina reforça no WhatsApp com o cliente que a peça 'Combo Casal Depoimento v2' segue sem aprovação, o que atrasa o refresh de criativo da campanha de Namorados.",
+      "actor_ids": ["p_carolina", "p_luiza"],
+      "related_node_ids": ["task_aprovar_combo"]
+    }
+  ]
+}

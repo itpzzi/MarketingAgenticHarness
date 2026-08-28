@@ -1,0 +1,58 @@
+{
+  "client_id": "cli_housewhey",
+  "generated_at": "2026-08-28T08:00:00-03:00",
+  "ranking": [
+    {
+      "ad_id": "ad_003",
+      "ad_name": "Omega3_UGC_Medico",
+      "nota_hook": 8.7,
+      "nota_cta": 8.0,
+      "palco": "escala",
+      "recomendacao": "seguir",
+      "motivo": "Hook alto, CTR sólido e conversão consistente. Prioridade de verba."
+    },
+    {
+      "ad_id": "ad_001",
+      "ad_name": "Combo_Casal_Depoimento",
+      "nota_hook": 7.9,
+      "nota_cta": 7.2,
+      "palco": "aprendizado",
+      "recomendacao": "seguir",
+      "motivo": "Performance estável, ainda com espaço de otimização de CTA."
+    },
+    {
+      "ad_id": "ad_005",
+      "ad_name": "Whey_Oferta_Combo",
+      "nota_hook": 6.8,
+      "nota_cta": 6.5,
+      "palco": "aprendizado",
+      "recomendacao": "seguir",
+      "motivo": "Retargeting com conversão saudável, monitorar CPA nas próximas semanas."
+    },
+    {
+      "ad_id": "ad_002",
+      "ad_name": "Combo_Casal_Estatico",
+      "nota_hook": 5.1,
+      "nota_cta": 5.4,
+      "palco": "aprendizado",
+      "recomendacao": "variar",
+      "motivo": "Hook fraco frente ao vídeo depoimento. Testar novo estático ou remover verba."
+    },
+    {
+      "ad_id": "ad_004",
+      "ad_name": "Omega3_Depoimento_v2",
+      "nota_hook": 3.2,
+      "nota_cta": 2.8,
+      "palco": "saturado",
+      "recomendacao": "pausar",
+      "motivo": "Hook rate em queda acentuada e spend concentrando leads perdidos. Criativo saturado.",
+      "brief_sugerido": {
+        "publico": "Lookalike 1% compradores 90d + interesse em nutrição esportiva",
+        "hook": "Antes/depois com prova social de um cliente real (não ator)",
+        "mensagem": "Reforçar o diferencial do ômega 3 puro sem revisitar o mesmo depoimento já saturado",
+        "cta": "Garanta o seu com frete grátis hoje",
+        "metrica_sucesso": "CPL abaixo de R$ 35 na primeira semana"
+      }
+    }
+  ]
+}

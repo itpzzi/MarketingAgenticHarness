@@ -1,0 +1,40 @@
+{
+  "client_id": "cli_housewhey",
+  "nodes": [
+    { "id": "hub_spot", "type": "hub", "label": "SPOT (operação)" },
+    { "id": "cli_housewhey", "type": "hub", "label": "Housewhey", "props": { "segmento": "e-commerce de suplementos" } },
+    { "id": "p_aline", "type": "person", "label": "Aline", "props": { "role": "gestora de tráfego pago" } },
+    { "id": "p_carolina", "type": "person", "label": "Carolina", "props": { "role": "gestão de conta / CS" } },
+    { "id": "p_luiza", "type": "person", "label": "Luiza", "props": { "role": "atendimento / WhatsApp" } },
+    { "id": "ch_meta", "type": "channel", "label": "Meta Ads" },
+    { "id": "ch_google", "type": "channel", "label": "Google Ads" },
+    { "id": "ch_crm", "type": "channel", "label": "CRM" },
+    { "id": "ch_whatsapp", "type": "channel", "label": "WhatsApp" },
+    { "id": "camp_namorados", "type": "campaign", "label": "Dia dos Namorados - Combo Casal" },
+    { "id": "camp_omega3", "type": "campaign", "label": "Omega 3 - Lançamento" },
+    { "id": "camp_whey", "type": "campaign", "label": "Whey Protein Always-On" },
+    { "id": "meet_2026_08_20", "type": "meeting", "label": "Call semanal 20/08" },
+    { "id": "task_aprovar_combo", "type": "task", "label": "Aprovar peça Combo Casal Depoimento v2", "props": { "status": "pendente", "dias_parado": 6 } },
+    { "id": "asset_manual_marca", "type": "asset", "label": "Manual de tom de marca Housewhey" }
+  ],
+  "edges": [
+    { "from": "cli_housewhey", "to": "hub_spot", "rel": "MEMBER_OF" },
+    { "from": "p_aline", "to": "hub_spot", "rel": "MEMBER_OF" },
+    { "from": "p_carolina", "to": "hub_spot", "rel": "MEMBER_OF" },
+    { "from": "p_luiza", "to": "hub_spot", "rel": "MEMBER_OF" },
+    { "from": "p_aline", "to": "ch_meta", "rel": "OPERATES" },
+    { "from": "p_aline", "to": "ch_google", "rel": "OPERATES" },
+    { "from": "p_carolina", "to": "ch_crm", "rel": "TRACKS" },
+    { "from": "p_luiza", "to": "ch_whatsapp", "rel": "OPERATES" },
+    { "from": "ch_meta", "to": "camp_namorados", "rel": "TRACKS" },
+    { "from": "ch_meta", "to": "camp_omega3", "rel": "TRACKS" },
+    { "from": "ch_meta", "to": "camp_whey", "rel": "TRACKS" },
+    { "from": "p_carolina", "to": "meet_2026_08_20", "rel": "MENTIONS" },
+    { "from": "p_aline", "to": "meet_2026_08_20", "rel": "MENTIONS" },
+    { "from": "meet_2026_08_20", "to": "camp_omega3", "rel": "MENTIONS" },
+    { "from": "meet_2026_08_20", "to": "task_aprovar_combo", "rel": "MENTIONS" },
+    { "from": "p_carolina", "to": "task_aprovar_combo", "rel": "APPROVES" },
+    { "from": "task_aprovar_combo", "to": "camp_namorados", "rel": "MENTIONS" },
+    { "from": "cli_housewhey", "to": "asset_manual_marca", "rel": "MENTIONS" }
+  ]
+}

@@ -1,0 +1,35 @@
+{
+  "client_id": "cli_housewhey",
+  "items": [
+    {
+      "canal": "whatsapp",
+      "data": "2026-08-14T11:03:00-03:00",
+      "de": "Aline",
+      "mensagem": "Gente, reparei que o Omega3_Depoimento_v2 tá travado, quase não converte mais essa semana. Vou olhar com calma mas acho que já era pra ter trocado."
+    },
+    {
+      "canal": "whatsapp",
+      "data": "2026-08-20T09:15:00-03:00",
+      "de": "Carolina",
+      "mensagem": "Cliente perguntou hoje por que o CPA da linha Whey subiu no último relatório. Vamos levar isso pra call de hoje à tarde."
+    },
+    {
+      "canal": "reuniao",
+      "data": "2026-08-20T14:00:00-03:00",
+      "de": "ata",
+      "mensagem": "Pauta: (1) performance da semana Namorados/Omega3/Whey; (2) aprovação da peça 'Combo Casal Depoimento v2' ainda pendente do cliente; (3) cliente pediu explicação sobre CPA da Whey Always-On, ficou de olhar segmentação de retargeting."
+    },
+    {
+      "canal": "whatsapp",
+      "data": "2026-08-26T16:05:00-03:00",
+      "de": "Carolina",
+      "mensagem": "Oi! Passando pra lembrar da aprovação da peça 'Combo Casal Depoimento v2' que está parada há alguns dias, isso vai atrasar o refresh de criativo da campanha de Namorados."
+    },
+    {
+      "canal": "whatsapp",
+      "data": "2026-08-27T10:40:00-03:00",
+      "de": "Luiza",
+      "mensagem": "Cliente respondeu que vai aprovar a peça ainda essa semana, só está validando internamente com o time de marketing dele."
+    }
+  ]
+}

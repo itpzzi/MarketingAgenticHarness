@@ -1,0 +1,28 @@
+{
+  "client_id": "cli_housewhey",
+  "leads": [
+    { "lead_id": "lead_001", "created_at": "2026-08-05T10:12:00-03:00", "status": "venda", "value_brl": 249.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_001", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_002", "created_at": "2026-08-06T14:33:00-03:00", "status": "venda", "value_brl": 249.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_001", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_003", "created_at": "2026-08-07T09:02:00-03:00", "status": "agendamento", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_001", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_004", "created_at": "2026-08-08T18:45:00-03:00", "status": "venda", "value_brl": 189.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_002", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_005", "created_at": "2026-08-09T11:20:00-03:00", "status": "perdido", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_002", "origem_declarada": "Instagram (anúncio)" },
+
+    { "lead_id": "lead_006", "created_at": "2026-08-10T08:55:00-03:00", "status": "venda", "value_brl": 159.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_003", "origem_declarada": "Indicação de amiga" },
+    { "lead_id": "lead_007", "created_at": "2026-08-11T13:10:00-03:00", "status": "venda", "value_brl": 159.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_003", "origem_declarada": "Instagram orgânico" },
+    { "lead_id": "lead_008", "created_at": "2026-08-12T16:40:00-03:00", "status": "venda", "value_brl": 319.80, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_003", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_009", "created_at": "2026-08-13T09:25:00-03:00", "status": "agendamento", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_003", "origem_declarada": "Google" },
+    { "lead_id": "lead_010", "created_at": "2026-08-14T19:05:00-03:00", "status": "venda", "value_brl": 159.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_003", "origem_declarada": "Instagram (anúncio)" },
+
+    { "lead_id": "lead_011", "created_at": "2026-08-10T10:00:00-03:00", "status": "lead", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_004", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_012", "created_at": "2026-08-11T12:15:00-03:00", "status": "perdido", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_004", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_013", "created_at": "2026-08-12T15:30:00-03:00", "status": "perdido", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_004", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_014", "created_at": "2026-08-13T17:50:00-03:00", "status": "perdido", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_004", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_015", "created_at": "2026-08-14T09:40:00-03:00", "status": "lead", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_004", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_016", "created_at": "2026-08-15T13:05:00-03:00", "status": "venda", "value_brl": 159.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_004", "origem_declarada": "Instagram (anúncio)" },
+
+    { "lead_id": "lead_017", "created_at": "2026-08-16T10:00:00-03:00", "status": "venda", "value_brl": 229.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_005", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_018", "created_at": "2026-08-17T14:20:00-03:00", "status": "venda", "value_brl": 229.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_005", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_019", "created_at": "2026-08-18T09:10:00-03:00", "status": "agendamento", "value_brl": 0, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_005", "origem_declarada": "Instagram (anúncio)" },
+    { "lead_id": "lead_020", "created_at": "2026-08-05T08:00:00-03:00", "status": "venda", "value_brl": 229.90, "utm_source": "meta", "utm_medium": "paid_social", "utm_content": "ad_006", "origem_declarada": "Instagram (anúncio)" }
+  ]
+}

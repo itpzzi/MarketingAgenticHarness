@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>AdzHubOrchestrator · Protótipo</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+  <div id="app">
+    <header class="topbar">
+      <div class="brand">
+        <span class="dot"></span>
+        <div>
+          <div class="brand-title">AdzHubOrchestrator</div>
+          <div class="brand-sub">harness híbrido · protótipo ilustrativo</div>
+        </div>
+      </div>
+      <div class="topbar-controls">
+        <select id="model">
+          <option value="openai/gpt-4o-mini">openai/gpt-4o-mini (fronteira)</option>
+          <option value="anthropic/claude-3.5-sonnet">anthropic/claude-3.5-sonnet (fronteira)</option>
+          <option value="meta-llama/llama-3.1-8b-instruct">meta-llama/llama-3.1-8b-instruct (rápido/barato)</option>
+        </select>
+        <input id="apiKey" type="password" placeholder="cole sua OPENROUTER_API_KEY (fica só no seu navegador)" />
+        <span id="keyStatus" class="key-status">sem chave — modo offline</span>
+      </div>
+    </header>
+
+    <div class="main">
+      <aside class="sidebar">
+        <div class="sidebar-title">Trace do harness (BFA)</div>
+        <div id="trace" class="trace-list">
+          <div class="trace-empty">O roteamento e os passos de cada pedido aparecem aqui em tempo real.</div>
+        </div>
+      </aside>
+
+      <section class="chat">
+        <div id="messages" class="messages">
+          <div class="msg assistant">
+            <div class="bubble">
+              Olá! Sou o <b>AdzHubOrchestrator</b>, protótipo do harness híbrido para o desafio AdzHub (cliente mock: <b>Housewhey</b>).
+              <br /><br />
+              Tente pedir, por exemplo:
+              <ul>
+                <li>"Cruze os gastos de Meta Ads com os leads do CRM e pause o criativo ineficaz, sugerindo variações de copy"</li>
+                <li>"Faça um diagnóstico da conta, tem alguma anomalia?"</li>
+                <li>"Monte a pauta da próxima reunião com o cliente"</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div id="composer" class="composer">
+          <textarea id="input" placeholder="Peça algo ao gestor... (Enter para enviar, Shift+Enter para nova linha)" rows="2"></textarea>
+          <button id="send">Enviar</button>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="/app.js"></script>
+</body>
+</html>
