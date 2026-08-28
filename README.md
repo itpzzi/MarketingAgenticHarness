@@ -84,7 +84,3 @@ lib/data.js            # Carga dos mocks em memória
 data/*.json, *.txt      # Dataset mockado (cliente Housewhey)
 public/                # Front-end (HTML/CSS/JS puro, sem build)
 ```
-
-## Nota sobre o paper
-
-A Seção 5 do paper descreve este protótipo; ajuste-a para refletir exatamente a tabela "o que é real vs. simulado" acima antes do envio final.
