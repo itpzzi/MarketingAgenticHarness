@@ -16,6 +16,7 @@
 - **Human-in-the-loop:** `yield` creates a deny-first approval boundary before a command runs.
 - **Strategy:** provider fallback selects OpenRouter, Ollama, or deterministic output.
 - **Map-reduce:** RLM splits the brand manual, summarizes chunks, then synthesizes copies.
+- **Activity streaming:** `POST /api/chat/stream` emits public execution milestones over SSE. These events describe routing, resource access, tool use, and task progress; they never expose hidden model reasoning, prompts, credentials, or internal context.
 
 ## Implementation constraints
 

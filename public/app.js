@@ -70,6 +70,41 @@ function addUserMessage(text) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
+function addActivityMessage() {
+  const msg = el('div', 'msg assistant activity-message');
+  const details = el('details', 'agent-activity');
+  details.open = true;
+  const summary = el('summary', '', 'Atividade do agente');
+  const status = el('span', 'activity-status working', 'Preparando tarefas...');
+  summary.appendChild(status);
+  const list = el('div', 'activity-list');
+  details.appendChild(summary);
+  details.appendChild(list);
+  msg.appendChild(details);
+  messagesEl.appendChild(msg);
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+  return { msg, details, list, status };
+}
+
+function addActivityStep(activity, trace) {
+  const item = el('div', `activity-step ${trace.activityType || 'reasoning'}`);
+  const icons = { routing: '↗', resource: '⌁', tool: '!', reasoning: '·' };
+  item.appendChild(el('span', 'activity-icon', icons[trace.activityType] || icons.reasoning));
+  const content = el('div', 'activity-content');
+  content.appendChild(el('div', 'activity-label', trace.label));
+  if (trace.detail) content.appendChild(el('div', 'activity-detail', trace.detail));
+  item.appendChild(content);
+  activity.list.appendChild(item);
+  activity.status.textContent = 'Executando...';
+  messagesEl.scrollTop = messagesEl.scrollHeight;
+}
+
+function completeActivity(activity, pendingApproval) {
+  activity.status.textContent = pendingApproval ? 'Aguardando sua decisão' : 'Concluído';
+  activity.status.className = pendingApproval ? 'activity-status pending' : 'activity-status complete';
+  activity.details.open = Boolean(pendingApproval);
+}
+
 function escapeHtml(s) {
   return s.replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
@@ -169,14 +204,35 @@ function renderApprovalCard(approval) {
 
 async function resolveApproval(decision, card, actions) {
   actions.querySelectorAll('button').forEach((b) => (b.disabled = true));
-  const res = await fetch('/api/approve', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ sessionId, decision }),
-  });
-  const json = await res.json();
-  card.remove();
-  applyResult(json);
+  const activity = addActivityMessage();
+  activity.status.textContent = decision === 'approve' ? 'Aplicando decisão...' : 'Registrando decisão...';
+  try {
+    const res = await fetch('/api/approve/stream', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId, decision }),
+    });
+    if (!res.ok || !res.body) throw new Error('Não foi possível registrar a decisão.');
+    const liveTrace = [];
+    await readStream(res.body, {
+      trace: (trace) => {
+        addActivityStep(activity, trace);
+        liveTrace.push(trace);
+        renderTrace(liveTrace);
+      },
+      result: (json) => {
+        completeActivity(activity, json.pendingApproval);
+        renderTrace(json.trace);
+        card.remove();
+        applyResult(json);
+      },
+      error: () => { throw new Error('O servidor não conseguiu concluir a decisão.'); },
+    });
+  } catch (error) {
+    completeActivity(activity, false);
+    addAssistantMessage(`Erro: ${error.message}`, [], null);
+    actions.querySelectorAll('button').forEach((button) => (button.disabled = false));
+  }
 }
 
 function addAssistantMessage(text, blocks, pendingApproval) {
@@ -226,9 +282,11 @@ function applyResult(json) {
 function setComposerEnabled(enabled) {
   inputEl.disabled = !enabled || isSending;
   sendBtn.disabled = !enabled || isSending;
-  inputEl.placeholder = enabled
-    ? 'Peça algo ao gestor... (Enter para enviar, Shift+Enter para nova linha)'
-    : 'Resolva a aprovação pendente acima antes de continuar...';
+  inputEl.placeholder = hasPendingApproval
+    ? 'Resolva a aprovação pendente acima antes de continuar...'
+    : enabled
+      ? 'Peça algo ao gestor... (Enter para enviar, Shift+Enter para nova linha)'
+      : 'O agente está trabalhando na sua solicitação...';
 }
 
 async function send() {
@@ -236,20 +294,35 @@ async function send() {
   if (!text || isSending) return;
   await ensureSession();
   addUserMessage(text);
+  const activity = addActivityMessage();
   inputEl.value = '';
   isSending = true;
   setComposerEnabled(false);
   sendBtn.textContent = 'Enviando...';
   sendBtn.classList.add('is-sending');
   try {
-    const res = await fetch('/api/chat', {
+    const res = await fetch('/api/chat/stream', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId, message: text, apiKey: apiKeyEl.value.trim(), model: modelEl.value }),
     });
-    const json = await res.json();
-    applyResult(json);
+    if (!res.ok || !res.body) throw new Error('Não foi possível iniciar a resposta.');
+    const liveTrace = [];
+    await readStream(res.body, {
+      trace: (trace) => {
+        addActivityStep(activity, trace);
+        liveTrace.push(trace);
+        renderTrace(liveTrace);
+      },
+      result: (json) => {
+        completeActivity(activity, json.pendingApproval);
+        renderTrace(json.trace);
+        applyResult(json);
+      },
+      error: () => { throw new Error('O servidor não conseguiu concluir a resposta.'); },
+    });
   } catch (e) {
+    completeActivity(activity, false);
     addAssistantMessage(`Erro de rede: ${e.message}`, [], null);
     hasPendingApproval = false;
   } finally {
@@ -257,6 +330,24 @@ async function send() {
     sendBtn.textContent = 'Enviar';
     sendBtn.classList.remove('is-sending');
     setComposerEnabled(!hasPendingApproval);
+  }
+}
+
+async function readStream(stream, handlers) {
+  const reader = stream.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  while (true) {
+    const { done, value } = await reader.read();
+    buffer += decoder.decode(value || new Uint8Array(), { stream: !done });
+    const events = buffer.split('\n\n');
+    buffer = events.pop();
+    events.forEach((event) => {
+      const type = event.match(/^event: (.+)$/m)?.[1];
+      const data = event.match(/^data: (.+)$/m)?.[1];
+      if (type && data && handlers[type]) handlers[type](JSON.parse(data));
+    });
+    if (done) break;
   }
 }
 

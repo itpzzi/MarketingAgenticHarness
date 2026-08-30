@@ -107,6 +107,41 @@ input[type="password"] { width: 280px; }
 .msg.assistant .bubble { background: #131a22; border: 1px solid var(--border); }
 .msg.user .bubble { background: #17324f; border: 1px solid #1f4569; }
 
+.activity-message { max-width: 780px; }
+.agent-activity {
+  width: 100%;
+  border: 1px solid #2d4358;
+  border-radius: 8px;
+  background: #101922;
+  overflow: hidden;
+}
+.agent-activity summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  cursor: pointer;
+  padding: 10px 12px;
+  color: #c9dff5;
+  font-size: 13px;
+  font-weight: 600;
+}
+.activity-status { font-size: 11px; font-weight: 500; color: var(--muted); }
+.activity-status.working { color: #b9d8ff; }
+.activity-status.working::after { content: ''; display: inline-block; width: 5px; height: 5px; margin-left: 6px; border-radius: 50%; background: currentColor; animation: badge-pulse 1s ease-in-out infinite; }
+.activity-status.complete { color: #7ee2a0; }
+.activity-status.pending { color: #f5c76a; }
+.activity-list { border-top: 1px solid #2d4358; padding: 4px 12px 8px; }
+.activity-step { display: flex; gap: 9px; padding: 8px 0; border-bottom: 1px solid #1d2a36; animation: message-enter 180ms ease-out both; }
+.activity-step:last-child { border-bottom: 0; }
+.activity-icon { color: var(--accent-2); font-size: 18px; line-height: 1; }
+.activity-step.routing .activity-icon { color: #b9d8ff; }
+.activity-step.resource .activity-icon { color: #77d9cf; }
+.activity-step.tool .activity-icon { color: #f5c76a; }
+.activity-step.reasoning .activity-icon { color: #b9d8ff; }
+.activity-content { min-width: 0; }
+.activity-label { color: var(--text); font-size: 12px; }
+.activity-detail { margin-top: 2px; color: var(--muted); font-size: 11px; line-height: 1.35; }
+
 .blocks { display: flex; flex-direction: column; gap: 10px; margin-top: 6px; max-width: 780px; }
 .block { border: 1px solid var(--border); border-radius: 8px; padding: 10px 12px; background: #0f151c; }
 .block-title { font-size: 11px; text-transform: uppercase; letter-spacing: 0.03em; color: var(--muted); margin-bottom: 8px; }
