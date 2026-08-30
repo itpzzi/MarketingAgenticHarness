@@ -1,6 +1,14 @@
 const messagesEl = document.getElementById('messages');
 const artifactsEl = document.getElementById('artifacts');
 const artifactsStatusEl = document.getElementById('artifactsStatus');
+const artifactsPanelEl = document.querySelector('.artifacts-panel');
+const toggleArtifactsBtn = document.getElementById('toggleArtifacts');
+const artifactDialog = document.getElementById('artifactDialog');
+const artifactDialogTitleEl = document.getElementById('artifactDialogTitle');
+const artifactDialogKindEl = document.getElementById('artifactDialogKind');
+const artifactDialogContentEl = document.getElementById('artifactDialogContent');
+const downloadActiveArtifactBtn = document.getElementById('downloadActiveArtifact');
+const closeArtifactBtn = document.getElementById('closeArtifact');
 const inputEl = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const apiKeyEl = document.getElementById('apiKey');
@@ -11,6 +19,8 @@ const llmStatusEl = document.getElementById('llmStatus');
 let sessionId = null;
 let isSending = false;
 let hasPendingApproval = false;
+let artifactSequence = 0;
+let activeArtifact = null;
 
 // A key nunca é enviada para nada além do próprio backend desta demo, e nunca
 // é persistida (apenas sessionStorage do navegador do avaliador).
@@ -170,10 +180,12 @@ function downloadArtifact(block, index) {
 
 function addArtifacts(blocks) {
   const artifacts = (blocks || []).filter((block) => ['text', 'table', 'chart', 'code'].includes(block.type));
-  if (!artifacts.length) return;
+  if (!artifacts.length) return [];
   artifactsEl.querySelector('.artifacts-empty')?.remove();
-  artifacts.forEach((artifact, index) => {
+  return artifacts.map((artifact, index) => {
+    const artifactId = `artifact-${artifactSequence++}`;
     const details = el('details', 'artifact-card');
+    details.id = artifactId;
     const summary = el('summary');
     const title = el('span', 'artifact-title', escapeHtml(artifact.title || 'Artefato gerado'));
     const labels = { text: 'Relatório', table: 'Tabela', chart: 'Gráfico', code: 'Código' };
@@ -185,13 +197,44 @@ function addArtifacts(blocks) {
       event.stopPropagation();
       downloadArtifact(artifact, index);
     });
+    summary.addEventListener('click', (event) => {
+      if (event.target !== download) {
+        event.preventDefault();
+        openArtifact(artifact, index);
+      }
+    });
     summary.append(title, kind, download);
     details.appendChild(summary);
     details.appendChild(renderBlock(artifact));
     artifactsEl.prepend(details);
+    return { artifact, artifactId, index, label: artifact.title || 'Artefato gerado', kind: labels[artifact.type] };
   });
+}
+
+function updateArtifactStatus() {
   const total = artifactsEl.querySelectorAll('.artifact-card').length;
-  artifactsStatusEl.textContent = `${total} ${total === 1 ? 'artefato gerado' : 'artefatos gerados'}`;
+  artifactsStatusEl.textContent = total ? `${total} ${total === 1 ? 'artefato gerado' : 'artefatos gerados'}` : 'Nenhum artefato nesta conversa';
+}
+
+function openArtifact(artifact, index) {
+  activeArtifact = { artifact, index };
+  const labels = { text: 'Relatório', table: 'Tabela', chart: 'Gráfico', code: 'Código' };
+  artifactDialogTitleEl.textContent = artifact.title || 'Artefato gerado';
+  artifactDialogKindEl.textContent = labels[artifact.type];
+  artifactDialogContentEl.replaceChildren(renderBlock(artifact));
+  artifactDialog.showModal();
+}
+
+function addArtifactChips(artifacts) {
+  if (!artifacts.length) return null;
+  const chips = el('div', 'artifact-chips');
+  artifacts.forEach(({ artifact, index, label, kind }) => {
+    const chip = el('button', 'artifact-chip', `${kind}: ${escapeHtml(label)}`);
+    chip.type = 'button';
+    chip.addEventListener('click', () => openArtifact(artifact, index));
+    chips.appendChild(chip);
+  });
+  return chips;
 }
 
 function renderTable(columns, rows) {
@@ -282,14 +325,16 @@ async function resolveApproval(decision, card, actions) {
 
 function addAssistantMessage(text, blocks, pendingApproval) {
   const msg = el('div', 'msg assistant');
-  const bubble = el('div', 'bubble', simpleMarkdown(text));
-  msg.appendChild(bubble);
-  addArtifacts(blocks);
+  if (text) msg.appendChild(el('div', 'bubble', simpleMarkdown(text)));
+  const artifacts = addArtifacts(blocks);
+  const chips = addArtifactChips(artifacts);
+  if (chips) msg.appendChild(chips);
   if (pendingApproval) {
     const blocksWrap = el('div', 'blocks');
     blocksWrap.appendChild(renderApprovalCard(pendingApproval));
     msg.appendChild(blocksWrap);
   }
+  updateArtifactStatus();
   messagesEl.appendChild(msg);
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
@@ -375,6 +420,15 @@ async function readStream(stream, handlers) {
 }
 
 sendBtn.addEventListener('click', send);
+toggleArtifactsBtn.addEventListener('click', () => {
+  const isCollapsed = artifactsPanelEl.classList.toggle('is-collapsed');
+  toggleArtifactsBtn.innerHTML = isCollapsed ? '&rsaquo;' : '&lsaquo;';
+  toggleArtifactsBtn.setAttribute('aria-label', isCollapsed ? 'Expandir artefatos' : 'Recolher artefatos');
+});
+closeArtifactBtn.addEventListener('click', () => artifactDialog.close());
+downloadActiveArtifactBtn.addEventListener('click', () => {
+  if (activeArtifact) downloadArtifact(activeArtifact.artifact, activeArtifact.index);
+});
 document.querySelectorAll('.suggestion').forEach((suggestion) => {
   suggestion.addEventListener('click', () => {
     if (isSending || hasPendingApproval) return;

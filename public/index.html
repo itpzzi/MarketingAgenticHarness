@@ -54,14 +54,31 @@
 
       <aside class="artifacts-panel" aria-label="Artefatos gerados">
         <div class="artifacts-heading">
-          <div class="sidebar-title">Artefatos</div>
-          <div id="artifactsStatus" class="artifacts-status">Nenhum artefato nesta conversa</div>
+          <div>
+            <div class="sidebar-title">Artefatos</div>
+            <div id="artifactsStatus" class="artifacts-status">Nenhum artefato nesta conversa</div>
+          </div>
+          <button id="toggleArtifacts" class="panel-toggle" type="button" aria-label="Recolher artefatos" title="Recolher artefatos">&lsaquo;</button>
         </div>
         <div id="artifacts" class="artifacts-list">
           <div class="artifacts-empty">Tabelas, gráficos e relatórios aparecerão aqui.</div>
         </div>
       </aside>
     </div>
+
+    <dialog id="artifactDialog" class="artifact-dialog">
+      <div class="artifact-dialog-header">
+        <div>
+          <div id="artifactDialogKind" class="artifact-kind"></div>
+          <div id="artifactDialogTitle" class="artifact-dialog-title"></div>
+        </div>
+        <div class="artifact-dialog-actions">
+          <button id="downloadActiveArtifact" class="artifact-download" type="button">Baixar</button>
+          <button id="closeArtifact" class="dialog-close" type="button" aria-label="Fechar artefato" title="Fechar">&times;</button>
+        </div>
+      </div>
+      <div id="artifactDialogContent" class="artifact-dialog-content"></div>
+    </dialog>
   </div>
 
   <script src="/app.js"></script>
