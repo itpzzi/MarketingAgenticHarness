@@ -39,18 +39,25 @@ Cole sua `OPENROUTER_API_KEY` no campo no topo da tela (fica só em `sessionStor
 
 ## Tools expostas (Gateway MCP simulado)
 
-Implementadas em [`lib/tools.js`](lib/tools.js), lendo os mocks em [`data/`](data/):
+O gateway distingue fontes de contexto imutáveis de comandos com efeito colateral. As regras de arquitetura estão em [`docs/architecture.md`](docs/architecture.md).
 
-| Tool | Camada simulada | Mutável? |
+### Resources (somente leitura)
+
+Implementados em [`lib/resources.js`](lib/resources.js), lendo os mocks em [`data/`](data/):
+
+| Resource | Camada simulada |
 |---|---|---|
-| `search_client_context` | Supercérebro · grafo | não |
-| `get_timeline` | Supercérebro · linha do tempo | não |
-| `list_ads` / `get_ad_insights` | API Meta Ads | não |
-| `get_leads` | API CRM | não |
-| `run_app_analise_criativos` | App de metodologia | não |
-| `get_mapa_solucao` | App de metodologia | não |
-| `search_conversations` | Memória de canal (reunião/WhatsApp) | não |
-| `pause_ad` | API Meta Ads | **sim — sempre passa pelo portão deny-first** |
+| `client_context` / `timeline` | Supercérebro · grafo e linha do tempo |
+| `ads` / `ad_insights` | API Meta Ads |
+| `leads` | API CRM |
+| `creative_ranking` / `solution_map` | App de metodologia |
+| `conversations` | Memória de canal |
+
+### Tools (comando mutável)
+
+| Tool | Efeito |
+|---|---|
+| `pause_ad` | Pausa anúncio e sempre passa pelo portão deny-first |
 
 ## Prompts de teste
 
@@ -78,7 +85,9 @@ server.js            # Express: rotas /api/chat, /api/approve, /api/session
 lib/router.js         # BFA: roteador semântico (heurístico) por pedido
 lib/flows.js          # Os fluxos híbridos (ReAct/Grafo/CodeAct/RLM/Permissões)
 lib/orchestrator.js   # Sessões em memória + condução dos async generators
-lib/tools.js           # Gateway MCP simulado (as tools)
+lib/prompts.js         # Instruções centralizadas para LLM
+lib/resources.js       # Contexto somente leitura
+lib/tools.js           # Comandos com efeito colateral
 lib/llm.js             # Cliente OpenRouter
 lib/data.js            # Carga dos mocks em memória
 data/*.json, *.txt      # Dataset mockado (cliente Housewhey)

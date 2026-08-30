@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const crypto = require('crypto');
 const { handleChat, handleApprove } = require('./lib/orchestrator');
+const { getOllamaStatus } = require('./lib/llm');
 
 const app = express();
 app.use(cors());
@@ -11,6 +12,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/data', express.static(path.join(__dirname, 'data')));
 
 app.get('/api/health', (req, res) => res.json({ ok: true }));
+app.get('/api/providers', async (req, res) => res.json({ ollama: await getOllamaStatus() }));
 
 app.post('/api/session', (req, res) => {
   res.json({ sessionId: crypto.randomUUID() });

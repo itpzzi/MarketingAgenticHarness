@@ -5,13 +5,18 @@ const sendBtn = document.getElementById('send');
 const apiKeyEl = document.getElementById('apiKey');
 const modelEl = document.getElementById('model');
 const keyStatusEl = document.getElementById('keyStatus');
+const llmStatusEl = document.getElementById('llmStatus');
 
 let sessionId = null;
+let isSending = false;
+let hasPendingApproval = false;
 
 // A key nunca é enviada para nada além do próprio backend desta demo, e nunca
 // é persistida (apenas sessionStorage do navegador do avaliador).
 apiKeyEl.value = sessionStorage.getItem('adzhub_or_key') || '';
 updateKeyStatus();
+refreshProviderStatus();
+window.setInterval(refreshProviderStatus, 30000);
 apiKeyEl.addEventListener('input', () => {
   sessionStorage.setItem('adzhub_or_key', apiKeyEl.value);
   updateKeyStatus();
@@ -19,12 +24,28 @@ apiKeyEl.addEventListener('input', () => {
 
 function updateKeyStatus() {
   if (apiKeyEl.value.trim()) {
-    keyStatusEl.textContent = 'chave carregada (usada só nesta sessão do navegador)';
+    keyStatusEl.textContent = 'OpenRouter configurado';
     keyStatusEl.classList.add('ok');
   } else {
-    keyStatusEl.textContent = 'sem chave — tentando modelo local (Ollama); pedidos com RLM podem levar alguns minutos em CPU';
+    keyStatusEl.textContent = 'sem chave OpenRouter';
     keyStatusEl.classList.remove('ok');
   }
+}
+
+async function refreshProviderStatus() {
+  try {
+    const res = await fetch('/api/providers');
+    const { ollama } = await res.json();
+    if (ollama.available) {
+      llmStatusEl.textContent = `Ollama escutando: ${ollama.models.join(', ') || 'modelos disponíveis'}`;
+      llmStatusEl.className = 'provider-badge online';
+      return;
+    }
+  } catch (error) {
+    // O badge abaixo informa a indisponibilidade sem interromper a interface.
+  }
+  llmStatusEl.textContent = 'Ollama indisponível';
+  llmStatusEl.className = 'provider-badge offline';
 }
 
 async function ensureSession() {
@@ -198,12 +219,13 @@ function applyResult(json) {
   }
   renderTrace(json.trace);
   addAssistantMessage(json.message, json.blocks, json.pendingApproval);
-  setComposerEnabled(!json.pendingApproval);
+  hasPendingApproval = Boolean(json.pendingApproval);
+  setComposerEnabled(!hasPendingApproval);
 }
 
 function setComposerEnabled(enabled) {
-  inputEl.disabled = !enabled;
-  sendBtn.disabled = !enabled;
+  inputEl.disabled = !enabled || isSending;
+  sendBtn.disabled = !enabled || isSending;
   inputEl.placeholder = enabled
     ? 'Peça algo ao gestor... (Enter para enviar, Shift+Enter para nova linha)'
     : 'Resolva a aprovação pendente acima antes de continuar...';
@@ -211,12 +233,14 @@ function setComposerEnabled(enabled) {
 
 async function send() {
   const text = inputEl.value.trim();
-  if (!text) return;
+  if (!text || isSending) return;
   await ensureSession();
   addUserMessage(text);
   inputEl.value = '';
+  isSending = true;
   setComposerEnabled(false);
-  sendBtn.textContent = '...';
+  sendBtn.textContent = 'Enviando...';
+  sendBtn.classList.add('is-sending');
   try {
     const res = await fetch('/api/chat', {
       method: 'POST',
@@ -227,13 +251,23 @@ async function send() {
     applyResult(json);
   } catch (e) {
     addAssistantMessage(`Erro de rede: ${e.message}`, [], null);
-    setComposerEnabled(true);
+    hasPendingApproval = false;
   } finally {
+    isSending = false;
     sendBtn.textContent = 'Enviar';
+    sendBtn.classList.remove('is-sending');
+    setComposerEnabled(!hasPendingApproval);
   }
 }
 
 sendBtn.addEventListener('click', send);
+document.querySelectorAll('.suggestion').forEach((suggestion) => {
+  suggestion.addEventListener('click', () => {
+    if (isSending || hasPendingApproval) return;
+    inputEl.value = suggestion.dataset.prompt;
+    send();
+  });
+});
 inputEl.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
