@@ -1,5 +1,6 @@
 const messagesEl = document.getElementById('messages');
-const traceEl = document.getElementById('trace');
+const artifactsEl = document.getElementById('artifacts');
+const artifactsStatusEl = document.getElementById('artifactsStatus');
 const inputEl = document.getElementById('input');
 const sendBtn = document.getElementById('send');
 const apiKeyEl = document.getElementById('apiKey');
@@ -146,6 +147,53 @@ function renderBlock(block) {
   return wrap;
 }
 
+function artifactFile(block, index) {
+  const title = block.title || `artefato-${index + 1}`;
+  const safeTitle = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  if (block.type === 'table') {
+    const rows = [block.columns, ...(block.rows || []).map((row) => block.columns.map((column) => row[column] ?? ''))];
+    const content = rows.map((row) => row.map((value) => `"${String(value).replace(/"/g, '""')}"`).join(',')).join('\n');
+    return { name: `${safeTitle}.csv`, content, type: 'text/csv;charset=utf-8' };
+  }
+  return { name: `${safeTitle}.md`, content: `# ${title}\n\n${block.content || ''}`, type: 'text/markdown;charset=utf-8' };
+}
+
+function downloadArtifact(block, index) {
+  const file = artifactFile(block, index);
+  const url = URL.createObjectURL(new Blob([file.content], { type: file.type }));
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = file.name;
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function addArtifacts(blocks) {
+  const artifacts = (blocks || []).filter((block) => ['text', 'table', 'chart', 'code'].includes(block.type));
+  if (!artifacts.length) return;
+  artifactsEl.querySelector('.artifacts-empty')?.remove();
+  artifacts.forEach((artifact, index) => {
+    const details = el('details', 'artifact-card');
+    const summary = el('summary');
+    const title = el('span', 'artifact-title', escapeHtml(artifact.title || 'Artefato gerado'));
+    const labels = { text: 'Relatório', table: 'Tabela', chart: 'Gráfico', code: 'Código' };
+    const kind = el('span', 'artifact-kind', labels[artifact.type]);
+    const download = el('button', 'artifact-download', 'Baixar');
+    download.type = 'button';
+    download.addEventListener('click', (event) => {
+      event.preventDefault();
+      event.stopPropagation();
+      downloadArtifact(artifact, index);
+    });
+    summary.append(title, kind, download);
+    details.appendChild(summary);
+    details.appendChild(renderBlock(artifact));
+    artifactsEl.prepend(details);
+  });
+  const total = artifactsEl.querySelectorAll('.artifact-card').length;
+  artifactsStatusEl.textContent = `${total} ${total === 1 ? 'artefato gerado' : 'artefatos gerados'}`;
+}
+
 function renderTable(columns, rows) {
   const table = el('table', 'data-table');
   const thead = el('thead');
@@ -186,7 +234,6 @@ function renderChart(points) {
   svg.innerHTML = `<svg class="chart-svg" viewBox="0 0 ${width} ${height}" xmlns="http://www.w3.org/2000/svg">${bars}</svg>`;
   return svg;
 }
-
 function renderApprovalCard(approval) {
   const card = el('div', 'block approval-card');
   card.appendChild(el('div', 'title', '⚠️ Aprovação necessária (Human-in-the-Loop)'));
@@ -218,11 +265,9 @@ async function resolveApproval(decision, card, actions) {
       trace: (trace) => {
         addActivityStep(activity, trace);
         liveTrace.push(trace);
-        renderTrace(liveTrace);
       },
       result: (json) => {
         completeActivity(activity, json.pendingApproval);
-        renderTrace(json.trace);
         card.remove();
         applyResult(json);
       },
@@ -239,11 +284,7 @@ function addAssistantMessage(text, blocks, pendingApproval) {
   const msg = el('div', 'msg assistant');
   const bubble = el('div', 'bubble', simpleMarkdown(text));
   msg.appendChild(bubble);
-  if (blocks && blocks.length) {
-    const blocksWrap = el('div', 'blocks');
-    blocks.forEach((b) => blocksWrap.appendChild(renderBlock(b)));
-    msg.appendChild(blocksWrap);
-  }
+  addArtifacts(blocks);
   if (pendingApproval) {
     const blocksWrap = el('div', 'blocks');
     blocksWrap.appendChild(renderApprovalCard(pendingApproval));
@@ -253,27 +294,11 @@ function addAssistantMessage(text, blocks, pendingApproval) {
   messagesEl.scrollTop = messagesEl.scrollHeight;
 }
 
-function renderTrace(trace) {
-  traceEl.innerHTML = '';
-  if (!trace || !trace.length) {
-    traceEl.appendChild(el('div', 'trace-empty', 'Nenhum passo ainda.'));
-    return;
-  }
-  trace.forEach((t) => {
-    const item = el('div', 'trace-item');
-    item.appendChild(el('div', 'paradigm', t.paradigm));
-    item.appendChild(el('div', 'label', t.label));
-    if (t.detail) item.appendChild(el('div', 'detail', t.detail));
-    traceEl.appendChild(item);
-  });
-}
-
 function applyResult(json) {
   if (json.error && json.error !== 'pending_approval_must_be_resolved_first') {
     addAssistantMessage(`Erro: ${json.error}`, [], null);
     return;
   }
-  renderTrace(json.trace);
   addAssistantMessage(json.message, json.blocks, json.pendingApproval);
   hasPendingApproval = Boolean(json.pendingApproval);
   setComposerEnabled(!hasPendingApproval);
@@ -312,11 +337,9 @@ async function send() {
       trace: (trace) => {
         addActivityStep(activity, trace);
         liveTrace.push(trace);
-        renderTrace(liveTrace);
       },
       result: (json) => {
         completeActivity(activity, json.pendingApproval);
-        renderTrace(json.trace);
         applyResult(json);
       },
       error: () => { throw new Error('O servidor não conseguiu concluir a resposta.'); },

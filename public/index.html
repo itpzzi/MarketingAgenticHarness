@@ -29,13 +29,6 @@
     </header>
 
     <div class="main">
-      <aside class="sidebar">
-        <div class="sidebar-title">Trace do harness (BFA)</div>
-        <div id="trace" class="trace-list">
-          <div class="trace-empty">O roteamento e os passos de cada pedido aparecem aqui em tempo real.</div>
-        </div>
-      </aside>
-
       <section class="chat">
         <div id="messages" class="messages">
           <div class="msg assistant">
@@ -58,6 +51,16 @@
           <button id="send">Enviar</button>
         </div>
       </section>
+
+      <aside class="artifacts-panel" aria-label="Artefatos gerados">
+        <div class="artifacts-heading">
+          <div class="sidebar-title">Artefatos</div>
+          <div id="artifactsStatus" class="artifacts-status">Nenhum artefato nesta conversa</div>
+        </div>
+        <div id="artifacts" class="artifacts-list">
+          <div class="artifacts-empty">Tabelas, gráficos e relatórios aparecerão aqui.</div>
+        </div>
+      </aside>
     </div>
   </div>
 
