@@ -1,24 +1,29 @@
-const express = require('express');
-const cors = require('cors');
-const path = require('path');
-const crypto = require('crypto');
-const { handleChat, handleApprove } = require('./lib/orchestrator');
-const { getOllamaStatus } = require('./lib/llm');
+import express, { Request, Response } from 'express';
+import cors from 'cors';
+import path from 'path';
+import crypto from 'crypto';
+import { handleChat, handleApprove } from './lib/orchestrator';
+import { getOllamaStatus } from './lib/llm';
+import type { TraceEvent } from './lib/types';
 
 const app = express();
 app.use(cors());
 app.use(express.json({ limit: '1mb' }));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use('/data', express.static(path.join(__dirname, 'data')));
 
-app.get('/api/health', (req, res) => res.json({ ok: true }));
-app.get('/api/providers', async (req, res) => res.json({ ollama: await getOllamaStatus() }));
+// Independente de rodar via tsx (server.ts na raiz) ou a partir do build
+// compilado (dist/server.js), o processo sempre é iniciado a partir da raiz do repo.
+const WEB_DIST = path.join(process.cwd(), 'web', 'dist');
+app.use(express.static(WEB_DIST));
+app.use('/data', express.static(path.join(process.cwd(), 'data')));
 
-app.post('/api/session', (req, res) => {
+app.get('/api/health', (_req: Request, res: Response) => res.json({ ok: true }));
+app.get('/api/providers', async (_req: Request, res: Response) => res.json({ ollama: await getOllamaStatus() }));
+
+app.post('/api/session', (_req: Request, res: Response) => {
   res.json({ sessionId: crypto.randomUUID() });
 });
 
-app.post('/api/chat', async (req, res) => {
+app.post('/api/chat', async (req: Request, res: Response) => {
   try {
     const { sessionId, message, apiKey, model } = req.body || {};
     if (!sessionId || !message) {
@@ -26,20 +31,21 @@ app.post('/api/chat', async (req, res) => {
     }
     const result = await handleChat(sessionId, { message, apiKey, model });
     res.json(result);
-  } catch (e) {
+  } catch (e: any) {
     console.error('chat_error', e);
     res.status(500).json({ error: 'internal_error', detail: e.message });
   }
 });
 
-function writeEvent(res, type, payload) {
+function writeEvent(res: Response, type: string, payload: unknown): void {
   res.write(`event: ${type}\ndata: ${JSON.stringify(payload)}\n\n`);
 }
 
-app.post('/api/chat/stream', async (req, res) => {
+app.post('/api/chat/stream', async (req: Request, res: Response) => {
   const { sessionId, message, apiKey, model } = req.body || {};
   if (!sessionId || !message) {
-    return res.status(400).json({ error: 'missing_sessionId_or_message' });
+    res.status(400).json({ error: 'missing_sessionId_or_message' });
+    return;
   }
 
   res.writeHead(200, {
@@ -54,7 +60,7 @@ app.post('/api/chat/stream', async (req, res) => {
       message,
       apiKey,
       model,
-      onTrace: (trace) => writeEvent(res, 'trace', trace),
+      onTrace: (trace: TraceEvent) => writeEvent(res, 'trace', trace),
     });
     writeEvent(res, 'result', result);
   } catch (error) {
@@ -65,7 +71,7 @@ app.post('/api/chat/stream', async (req, res) => {
   }
 });
 
-app.post('/api/approve', async (req, res) => {
+app.post('/api/approve', async (req: Request, res: Response) => {
   try {
     const { sessionId, decision } = req.body || {};
     if (!sessionId || !['approve', 'reject'].includes(decision)) {
@@ -73,16 +79,17 @@ app.post('/api/approve', async (req, res) => {
     }
     const result = await handleApprove(sessionId, decision);
     res.json(result);
-  } catch (e) {
+  } catch (e: any) {
     console.error('approve_error', e);
     res.status(500).json({ error: 'internal_error', detail: e.message });
   }
 });
 
-app.post('/api/approve/stream', async (req, res) => {
+app.post('/api/approve/stream', async (req: Request, res: Response) => {
   const { sessionId, decision } = req.body || {};
   if (!sessionId || !['approve', 'reject'].includes(decision)) {
-    return res.status(400).json({ error: 'missing_sessionId_or_decision' });
+    res.status(400).json({ error: 'missing_sessionId_or_decision' });
+    return;
   }
 
   res.writeHead(200, {
@@ -93,7 +100,7 @@ app.post('/api/approve/stream', async (req, res) => {
   res.flushHeaders();
 
   try {
-    const result = await handleApprove(sessionId, decision, (trace) => writeEvent(res, 'trace', trace));
+    const result = await handleApprove(sessionId, decision, (trace: TraceEvent) => writeEvent(res, 'trace', trace));
     writeEvent(res, 'result', result);
   } catch (error) {
     console.error('approve_stream_error', error);
@@ -101,6 +108,11 @@ app.post('/api/approve/stream', async (req, res) => {
   } finally {
     res.end();
   }
+});
+
+// SPA fallback: qualquer rota não-API cai no index.html do Vue Router (se vier a existir).
+app.get(/^(?!\/api|\/data).*/, (_req: Request, res: Response) => {
+  res.sendFile(path.join(WEB_DIST, 'index.html'));
 });
 
 const PORT = process.env.PORT || 8080;

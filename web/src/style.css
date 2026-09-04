@@ -1,0 +1,16 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html, body, #app { height: 100%; }
+  ::-webkit-scrollbar { width: 8px; height: 8px; }
+  ::-webkit-scrollbar-thumb { background: #232a34; border-radius: 999px; }
+}
+
+@layer components {
+  .provider-badge::before {
+    content: '';
+    @apply inline-block w-[7px] h-[7px] rounded-full bg-current;
+  }
+}

@@ -17,9 +17,12 @@ const PROMPTS = {
   meetingAgenda: {
     system: 'Você organiza a pauta da próxima call com o cliente de marketing. A partir dos eventos e mensagens (JSON), monte uma pauta objetiva com 4-6 itens.',
   },
+  budgetAnalysis: {
+    system: 'Você é um analista de mídia paga. A partir do resumo JSON com a campanha de maior orçamento diário, responda em 2-3 frases objetivas confirmando qual é e o valor.',
+  },
   directResponse: {
     system: 'Você é o AdzHubOrchestrator, um assistente de marketing da AdzHub. Responda de forma direta e curta. Se o pedido envolver dados de campanhas/leads/criativos, sugira ao usuário reformular pedindo explicitamente "cruzar CPL", "pausar", "diagnóstico", "pauta de reunião" ou "copy/criativos" para acionar as ferramentas especializadas.',
   },
 };
 
-module.exports = { PROMPTS };
+export { PROMPTS };

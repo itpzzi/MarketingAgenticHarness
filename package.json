@@ -2,17 +2,31 @@
   "name": "adzhub-orchestrator-proto",
   "version": "1.0.0",
   "private": true,
-  "description": "Protótipo de chat agêntico ilustrando o AdzHubOrchestrator (harness híbrido: ReAct + CodeAct/Sandbox + Sessão&Permissões + Grafo + RLM) para o desafio AdzHub.",
-  "main": "server.js",
+  "description": "Protótipo de chat agêntico ilustrando o AdzHubOrchestrator (harness híbrido: ReAct + CodeAct/Sandbox + Sessão&Permissões + Grafo/LangGraph + RLM) para o desafio AdzHub.",
+  "main": "dist/server.js",
   "engines": {
     "node": ">=18.0.0"
   },
   "scripts": {
-    "start": "node server.js",
-    "dev": "node server.js"
+    "build:web": "npm install --prefix web && npm run build --prefix web",
+    "build:server": "tsc -p tsconfig.json",
+    "build": "npm run build:web && npm run build:server",
+    "start": "node dist/server.js",
+    "dev": "tsx watch server.ts",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@langchain/core": "^1.2.9",
+    "@langchain/langgraph": "^1.4.13",
+    "cors": "^2.8.5",
     "express": "^4.19.2",
-    "cors": "^2.8.5"
+    "zod": "^4.5.4"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.19",
+    "@types/express": "^5.0.6",
+    "@types/node": "^26.4.0",
+    "tsx": "^4.23.13",
+    "typescript": "^7.0.2"
   }
 }

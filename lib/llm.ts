@@ -12,7 +12,20 @@ const LOCAL_MODELS = {
   fast: process.env.OLLAMA_FAST_MODEL || 'qwen2.5:3b',
 };
 
-async function callOpenRouter({ apiKey, model, messages, temperature = 0.4, maxTokens = 900 }) {
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+interface CallOpenRouterArgs {
+  apiKey?: string;
+  model?: string;
+  messages: ChatMessage[];
+  temperature?: number;
+  maxTokens?: number;
+}
+
+async function callOpenRouter({ apiKey, model, messages, temperature = 0.4, maxTokens = 900 }: CallOpenRouterArgs): Promise<string> {
   if (!apiKey) {
     throw new Error('missing_api_key');
   }
@@ -34,12 +47,12 @@ async function callOpenRouter({ apiKey, model, messages, temperature = 0.4, maxT
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    const err = new Error(`openrouter_error_${res.status}`);
+    const err = new Error(`openrouter_error_${res.status}`) as Error & { detail?: string };
     err.detail = text;
     throw err;
   }
 
-  const json = await res.json();
+  const json: any = await res.json();
   const content = json?.choices?.[0]?.message?.content;
   if (!content) {
     throw new Error('openrouter_empty_response');
@@ -47,10 +60,18 @@ async function callOpenRouter({ apiKey, model, messages, temperature = 0.4, maxT
   return content.trim();
 }
 
-async function callOllama({ model, messages, temperature = 0.4, maxTokens = 900 }) {
+interface CallOllamaArgs {
+  model: string;
+  messages: ChatMessage[];
+  temperature?: number;
+  maxTokens?: number;
+}
+
+async function callOllama({ model, messages, temperature = 0.4, maxTokens = 900 }: CallOllamaArgs): Promise<string> {
   const res = await fetch(`${OLLAMA_URL}/api/chat`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
+    signal: AbortSignal.timeout(4000),
     body: JSON.stringify({
       model,
       messages,
@@ -61,12 +82,12 @@ async function callOllama({ model, messages, temperature = 0.4, maxTokens = 900 
 
   if (!res.ok) {
     const text = await res.text().catch(() => '');
-    const err = new Error(`ollama_error_${res.status}`);
+    const err = new Error(`ollama_error_${res.status}`) as Error & { detail?: string };
     err.detail = text;
     throw err;
   }
 
-  const json = await res.json();
+  const json: any = await res.json();
   const content = json?.message?.content;
   if (!content) {
     throw new Error('ollama_empty_response');
@@ -74,15 +95,15 @@ async function callOllama({ model, messages, temperature = 0.4, maxTokens = 900 
   return content.trim();
 }
 
-async function getOllamaStatus() {
+async function getOllamaStatus(): Promise<{ available: boolean; endpoint: string; models: string[] }> {
   try {
     const res = await fetch(`${OLLAMA_URL}/api/tags`, { signal: AbortSignal.timeout(1500) });
     if (!res.ok) throw new Error(`ollama_error_${res.status}`);
-    const json = await res.json();
-    return { available: true, endpoint: OLLAMA_URL, models: (json.models || []).map((item) => item.name) };
+    const json: any = await res.json();
+    return { available: true, endpoint: OLLAMA_URL, models: (json.models || []).map((item: any) => item.name) };
   } catch (error) {
     return { available: false, endpoint: OLLAMA_URL, models: [] };
   }
 }
 
-module.exports = { callOpenRouter, callOllama, getOllamaStatus, LOCAL_MODELS };
+export { callOpenRouter, callOllama, getOllamaStatus, LOCAL_MODELS };
